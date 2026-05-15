@@ -1,42 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Study Planner</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudyFlow – Sign In</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
 </head>
+<body class="auth-page">
+  <div class="auth-bg">
+    <div class="bg-orb orb1"></div>
+    <div class="bg-orb orb2"></div>
+    <div class="bg-orb orb3"></div>
+  </div>
 
-<body>
-
-<div class="navbar">
-    <div class="logo">Study Planner</div>
-
-    <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="login.html">Login</a>
-        <a href="register.html" class="btn-primary">Register</a>
-    </div>
-</div>
-
-<div class="hero">
-
-    <div class="hero-left">
-        <h1>Plan Your Study <br><span>Achieve Goals</span></h1>
-        <p>Organize tasks, schedules and track your progress easily.</p>
-
-        <a href="register.html">
-            <button>Get Started</button>
-        </a>
+  <div class="auth-container">
+    <div class="auth-brand">
+      <div class="brand-icon">📚</div>
+      <h1 class="brand-name">StudyFlow</h1>
+      <p class="brand-tagline">Plan. Focus. Achieve.</p>
     </div>
 
-    <div class="hero-right">
-        <img src="assets/ui.png">
-    </div>
+    <form class="auth-card" action="dashboard.html" method="get">
+      <h2 class="auth-title">Welcome back</h2>
+      <p class="auth-sub">Sign in to your study space</p>
 
-</div>
+      <div class="form-group">
+        <label class="form-label" for="loginEmail">Email address</label>
+        <input type="email" id="loginEmail" name="email" class="form-input" placeholder="you@example.com" required />
+      </div>
 
+      <div class="form-group">
+        <label class="form-label" for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" name="password" class="form-input" placeholder="••••••••" required minlength="6" />
+      </div>
+
+      <div class="form-row">
+        <label class="checkbox-label">
+          <input type="checkbox" id="rememberMe" name="remember" />
+          <span>Remember me</span>
+        </label>
+        <a href="forgot-password.html" class="forgot-link">Forgot password?</a>
+      </div>
+
+      <button class="btn-primary full-width" type="submit">Sign In</button>
+      <p class="auth-switch">Don't have an account? <a href="register.html">Create one</a></p>
+    </form>
+  </div>
 </body>
-
-<footer class="footer">
-    <p>© 2026 Study Planner. All rights reserved.</p>
-</footer>
 </html>
