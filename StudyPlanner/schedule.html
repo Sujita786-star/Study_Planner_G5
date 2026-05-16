@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudyFlow – Schedule</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  <div id="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon-sm">📚</div>
+        <span>StudyFlow</span>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-item ">
+          <span class="nav-icon">🏠</span><span>Dashboard</span>
+        </a>
+        <a href="schedule.html" class="nav-item active">
+          <span class="nav-icon">📅</span><span>Schedule</span>
+        </a>
+        <a href="tasks.html" class="nav-item ">
+          <span class="nav-icon">✅</span><span>Tasks</span>
+        </a>
+        <a href="progress.html" class="nav-item ">
+          <span class="nav-icon">📊</span><span>Progress</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-avatar-sm" id="sidebarAvatar">A</div>
+        <div class="user-info-sm">
+          <div class="user-name-sm" id="sidebarName">Student</div>
+          <div class="user-role">Learner</div>
+        </div>
+      <a class="logout-btn" href="goodbye.html" title="Logout">⏻</a>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar">
+        <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+        <div class="topbar-search">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="Search tasks, subjects..." class="search-input" id="searchInput" oninput="handleSearch()" />
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-btn" onclick="location.href='tasks.html'">＋ Add Task</button>
+          <div class="notif-btn" onclick="toggleNotifications()">
+            🔔
+            <span class="notif-badge" id="notifBadge">3</span>
+          </div>
+          <div class="notif-dropdown hidden" id="notifDropdown">
+            <div class="notif-header">Notifications</div>
+            <div class="notif-item unread">
+              <span class="notif-dot"></span>
+              <div>
+                <div class="notif-text">Math assignment due tomorrow</div>
+                <div class="notif-time">2 hours ago</div>
+              </div>
+            </div>
+            <div class="notif-item unread">
+              <span class="notif-dot"></span>
+              <div>
+                <div class="notif-text">Physics quiz in 3 days</div>
+                <div class="notif-time">5 hours ago</div>
+              </div>
+            </div>
+            <div class="notif-item unread">
+              <span class="notif-dot"></span>
+              <div>
+                <div class="notif-text">Weekly goal 80% complete!</div>
+                <div class="notif-time">1 day ago</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+
+      <!-- SCHEDULE PAGE -->
+      <section class="page active" id="schedulePage">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">Schedule</h2>
+            <p class="page-subtitle">Plan your study sessions</p>
+          </div>
+          <a href="add_session.html" class="btn-primary" style="display:inline-block;">
+  ＋ Add Session
+</a>
+        </div>
+
+        <!-- Calendar Navigation -->
+        <div class="card calendar-card">
+          <div class="cal-nav">
+  <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
+  
+  <h3 class="cal-month" id="calMonth">May 2026</h3>
+  
+  <button class="cal-nav-btn" onclick="changeWeek(1)">›</button>
+</div>
+          <div class="cal-days-header" id="calDaysHeader"></div>
+          <div class="cal-grid" id="calGrid"></div>
+        </div>
+
+        <!-- Sessions List -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Scheduled Sessions</h3>
+          </div>
+          <div id="sessionsList" class="sessions-list"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <!-- ADD TASK MODAL -->
+  <div class="modal-overlay hidden" id="taskModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalTitle">Add New Task</h3>
+        <button class="modal-close" onclick="closeTaskModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editTaskId" />
+        <div class="form-group">
+          <label class="form-label">Task Title <span class="required">*</span></label>
+          <input type="text" id="taskTitle" class="form-input" placeholder="e.g. Chapter 5 – Organic Chemistry" />
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Subject <span class="required">*</span></label>
+            <input type="text" id="taskSubject" class="form-input" placeholder="e.g. Chemistry" list="subjectSuggestions"/>
+            <datalist id="subjectSuggestions">
+              <option value="Mathematics"/>
+              <option value="Physics"/>
+              <option value="Chemistry"/>
+              <option value="Biology"/>
+              <option value="English"/>
+              <option value="History"/>
+              <option value="Computer Science"/>
+            </datalist>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Priority</label>
+            <select id="taskPriority" class="form-input">
+              <option value="low">🟢 Low</option>
+              <option value="medium" selected>🟡 Medium</option>
+              <option value="high">🔴 High</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Due Date <span class="required">*</span></label>
+            <input type="date" id="taskDue" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Estimated Hours</label>
+            <input type="number" id="taskHours" class="form-input" placeholder="2" min="0.5" max="24" step="0.5" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select id="taskStatus" class="form-input">
+            <option value="pending">⏳ Pending</option>
+            <option value="in-progress">🔄 In Progress</option>
+            <option value="completed">✅ Completed</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Notes</label>
+          <textarea id="taskNotes" class="form-input form-textarea" placeholder="Any additional notes..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeTaskModal()">Cancel</button>
+        <button class="btn-primary" onclick="saveTask()">Save Task</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCHEDULE MODAL -->
+  <div class="modal-overlay hidden" id="scheduleModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Study Session</h3>
+        <button class="modal-close" onclick="closeScheduleModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Session Title</label>
+          <input type="text" id="sessionTitle" class="form-input" placeholder="e.g. Morning Math Review" />
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Date</label>
+            <input type="date" id="sessionDate" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Subject</label>
+            <input type="text" id="sessionSubject" class="form-input" placeholder="Subject" />
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Start Time</label>
+            <input type="time" id="sessionStart" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">End Time</label>
+            <input type="time" id="sessionEnd" class="form-input" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Color</label>
+          <div class="color-picker" id="sessionColorPicker">
+            <div class="color-opt selected" data-color="#6366f1" style="background:#6366f1" onclick="selectColor(this)"></div>
+            <div class="color-opt" data-color="#10b981" style="background:#10b981" onclick="selectColor(this)"></div>
+            <div class="color-opt" data-color="#f59e0b" style="background:#f59e0b" onclick="selectColor(this)"></div>
+            <div class="color-opt" data-color="#ef4444" style="background:#ef4444" onclick="selectColor(this)"></div>
+            <div class="color-opt" data-color="#8b5cf6" style="background:#8b5cf6" onclick="selectColor(this)"></div>
+            <div class="color-opt" data-color="#ec4899" style="background:#ec4899" onclick="selectColor(this)"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeScheduleModal()">Cancel</button>
+        <button class="btn-primary" onclick="saveSession()">Save Session</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast hidden" id="toast">
+    <span id="toastMsg"></span>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
